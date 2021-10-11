@@ -27,6 +27,12 @@
                 >
                   Departments
                 </BreezeNavLink>
+                <BreezeNavLink
+                  :href="route('employees.index')"
+                  :active="route().current('employees.index')"
+                >
+                  Employees
+                </BreezeNavLink>
               </div>
             </div>
 
@@ -162,6 +168,12 @@
             >
               Departments
             </BreezeResponsiveNavLink>
+            <BreezeResponsiveNavLink
+              :href="route('employees.index')"
+              :active="route().current('employees.index')"
+            >
+              Employees
+            </BreezeResponsiveNavLink>
           </div>
 
           <!-- Responsive Settings Options -->
@@ -196,7 +208,9 @@
       </header>
 
       <!-- Page Content -->
+
       <main>
+        <Alert :toast="$page.props.toast" />
         <slot />
       </main>
     </div>
@@ -210,7 +224,7 @@ import BreezeDropdownLink from "@/Components/DropdownLink.vue";
 import BreezeNavLink from "@/Components/NavLink.vue";
 import BreezeResponsiveNavLink from "@/Components/ResponsiveNavLink.vue";
 import { Link } from "@inertiajs/inertia-vue3";
-
+import Alert from "@/Components/Alert.vue";
 export default {
   components: {
     BreezeApplicationLogo,
@@ -219,6 +233,7 @@ export default {
     BreezeNavLink,
     BreezeResponsiveNavLink,
     Link,
+    Alert,
   },
 
   data() {

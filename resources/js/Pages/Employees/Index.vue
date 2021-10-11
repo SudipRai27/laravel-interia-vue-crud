@@ -13,44 +13,54 @@
         <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
           <div class="p-6 bg-white border-b border-gray-200">
             <div class="flex items-end mb-6">
-              <!-- can also do $page.props.can.create -->
-              <AnchorLink :href="route('departments.create')" v-if="can.create">
-                Create Department
+              <div class="mr-4">
+                <select v-model="departmentId" @change="getDepartment($event)">
+                  <option value="">Please select a department</option>
+                  <option
+                    v-for="department in departments"
+                    :key="`department${department.id}`"
+                    :value="department.id"
+                  >
+                    {{ department.name }}
+                  </option>
+                </select>
+              </div>
+              <AnchorLink :href="route('employees.create')">
+                Create Employee
               </AnchorLink>
             </div>
+
             <Table>
               <template #header>
                 <TableColumn>Id</TableColumn>
                 <TableColumn>Name</TableColumn>
+                <TableColumn>Email</TableColumn>
+                <TableColumn>Phone</TableColumn>
+                <TableColumn>Department</TableColumn>
                 <TableColumn>Action</TableColumn>
               </template>
               <tr
-                v-for="department in departments.data"
-                :key="department.id"
+                v-for="employee in employees.data"
+                :key="employee.id"
                 class="hover:bg-gray-200"
               >
-                <TableColumn>{{ department.id }}</TableColumn>
-                <TableColumn>{{ department.name }}</TableColumn>
+                <TableColumn>{{ employee.id }}</TableColumn>
+                <TableColumn>{{ employee.name }}</TableColumn>
+                <TableColumn>{{ employee.email }}</TableColumn>
+                <TableColumn>{{ employee.phone }}</TableColumn>
+                <TableColumn>{{ employee.department }}</TableColumn>
                 <TableColumn>
                   <AnchorLink
-                    :href="route('departments.edit', { slug: department.slug })"
+                    :href="route('employees.edit', { employee: employee.id })"
                     mode="edit"
-                    v-if="department.can.update"
                   >
                     Edit
                   </AnchorLink>
                   <AnchorLink
-                    @click.prevent="goToEmployees(department.id)"
-                    mode="view"
-                    href="#"
-                  >
-                    View
-                  </AnchorLink>
-                  <AnchorLink
-                    href="#"
-                    @click.prevent="deleteDepartment(department.slug)"
+                    :href="
+                      route('employees.destroy', { employee: employee.id })
+                    "
                     method="DELETE"
-                    v-if="department.can.delete"
                     as="button"
                     mode="delete"
                   >
@@ -59,16 +69,16 @@
                 </TableColumn>
               </tr>
             </Table>
-            <!-- <Pagination :links="departments.links"></Pagination> -->
 
-            <Paginator :paginator="departments" />
+            <!-- <Pagination :links="employees.links"></Pagination> -->
+
+            <Paginator :paginator="employees" />
           </div>
         </div>
       </div>
     </div>
   </BreezeAuthenticatedLayout>
 </template>
-
 <script>
 import AnchorLink from "@/Components/AnchorLink.vue";
 import Table from "@/Components/Table";
@@ -76,8 +86,10 @@ import Paginator from "@/Components/Paginator";
 import Pagination from "@/Components/Pagination";
 import TableColumn from "@/Components/TableColumn.vue";
 import { Head } from "@inertiajs/inertia-vue3";
-import { Inertia } from "@inertiajs/inertia";
 import BreezeAuthenticatedLayout from "@/Layouts/Authenticated.vue";
+import { ref } from "@vue/reactivity";
+import { Inertia } from "@inertiajs/inertia";
+import { onMounted } from "@vue/runtime-core";
 
 export default {
   components: {
@@ -95,30 +107,37 @@ export default {
       required: true,
       type: Object,
     },
-    can: {
+    employees: {
       required: true,
       type: Object,
     },
+    department_id: [Number, String],
   },
 
-  setup() {
-    const goToEmployees = (departmentId) => {
-      Inertia.get(route("employees.index"), {
-        department_id: departmentId,
-      });
-    };
+  setup(props) {
+    const departmentId = ref("");
 
-    const deleteDepartment = (slug) => {
-      Inertia.delete(route("departments.destroy", slug), {
-        preserveScroll: true,
-        preserveState: false,
-      });
+    onMounted(() => {
+      departmentId.value = props.department_id;
+    });
+
+    const getDepartment = (event) => {
+      Inertia.get(
+        route("employees.index"),
+        {
+          department_id: event.target.value,
+        },
+        {
+          only: ["employees", "department_id"],
+        }
+      );
     };
 
     return {
-      goToEmployees,
-      deleteDepartment,
+      departmentId,
+      getDepartment,
     };
   },
 };
 </script>
+

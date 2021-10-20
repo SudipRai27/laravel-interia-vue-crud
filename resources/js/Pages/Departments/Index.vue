@@ -20,8 +20,18 @@
             </div>
             <Table>
               <template #header>
-                <TableColumn>Id</TableColumn>
-                <TableColumn>Name</TableColumn>
+                <TableColumn @click="sortColumn('id')">
+                  Id
+                  <template v-if="sortBy === 'id'">
+                    {{ sort === "asc" ? "&darr;" : "&uarr;" }}
+                  </template>
+                </TableColumn>
+                <TableColumn @click="sortColumn('name')">
+                  Name
+                  <template v-if="sortBy === 'name'">
+                    {{ sort === "asc" ? "&darr;" : "&uarr;" }}
+                  </template>
+                </TableColumn>
                 <TableColumn>Action</TableColumn>
               </template>
               <tr
@@ -29,7 +39,7 @@
                 :key="department.id"
                 class="hover:bg-gray-200"
               >
-                <TableColumn>{{ department.id }}</TableColumn>
+                <TableColumn>{{ department.id }} </TableColumn>
                 <TableColumn>{{ department.name }}</TableColumn>
                 <TableColumn>
                   <AnchorLink
@@ -99,9 +109,11 @@ export default {
       required: true,
       type: Object,
     },
+    sortBy: String,
+    sort: String,
   },
 
-  setup() {
+  setup(props) {
     const goToEmployees = (departmentId) => {
       Inertia.get(route("employees.index"), {
         department_id: departmentId,
@@ -115,9 +127,18 @@ export default {
       });
     };
 
+    const sortColumn = (col) => {
+      Inertia.get(route("departments.index"), {
+        sortBy: col,
+        sort: props.sort === "asc" ? "desc" : "asc",
+        page: props.departments.current_page,
+      });
+    };
+
     return {
       goToEmployees,
       deleteDepartment,
+      sortColumn,
     };
   },
 };

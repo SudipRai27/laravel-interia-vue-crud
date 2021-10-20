@@ -17,19 +17,19 @@
               <div class="hidden space-x-8 sm:-my-px sm:ml-10 sm:flex">
                 <BreezeNavLink
                   :href="route('dashboard')"
-                  :active="route().current('dashboard')"
+                  :active="isActive('dashboard')"
                 >
                   Dashboard
                 </BreezeNavLink>
                 <BreezeNavLink
                   :href="route('departments.index')"
-                  :active="route().current('departments.index')"
+                  :active="isActive('departments')"
                 >
                   Departments
                 </BreezeNavLink>
                 <BreezeNavLink
                   :href="route('employees.index')"
-                  :active="route().current('employees.index')"
+                  :active="isActive('employees')"
                 >
                   Employees
                 </BreezeNavLink>
@@ -83,6 +83,12 @@
 
                   <template #content>
                     <BreezeDropdownLink
+                      :href="route('profile.edit')"
+                      as="button"
+                    >
+                      Profile
+                    </BreezeDropdownLink>
+                    <BreezeDropdownLink
                       :href="route('logout')"
                       method="post"
                       as="button"
@@ -105,11 +111,8 @@
                   p-2
                   rounded-md
                   text-gray-400
-                  hover:text-gray-500
-                  hover:bg-gray-100
-                  focus:outline-none
-                  focus:bg-gray-100
-                  focus:text-gray-500
+                  hover:text-gray-500 hover:bg-gray-100
+                  focus:outline-none focus:bg-gray-100 focus:text-gray-500
                   transition
                   duration-150
                   ease-in-out
@@ -158,19 +161,19 @@
           <div class="pt-2 pb-3 space-y-1">
             <BreezeResponsiveNavLink
               :href="route('dashboard')"
-              :active="route().current('dashboard')"
+              :active="isActive('dashboard')"
             >
               Dashboard
             </BreezeResponsiveNavLink>
             <BreezeResponsiveNavLink
               :href="route('departments.index')"
-              :active="route().current('departments.index')"
+              :active="isActive('departments')"
             >
               Departments
             </BreezeResponsiveNavLink>
             <BreezeResponsiveNavLink
               :href="route('employees.index')"
-              :active="route().current('employees.index')"
+              :active="isActive('employees')"
             >
               Employees
             </BreezeResponsiveNavLink>
@@ -188,6 +191,12 @@
             </div>
 
             <div class="mt-3 space-y-1">
+              <BreezeResponsiveNavLink
+                :href="route('profile.edit')"
+                as="button"
+              >
+                Profile
+              </BreezeResponsiveNavLink>
               <BreezeResponsiveNavLink
                 :href="route('logout')"
                 method="post"
@@ -240,6 +249,16 @@ export default {
     return {
       showingNavigationDropdown: false,
     };
+  },
+
+  methods: {
+    isActive(str) {
+      let locationUrl = location.pathname.substring(1);
+      if (locationUrl.startsWith(str)) {
+        return true;
+      }
+      return false;
+    },
   },
 };
 </script>

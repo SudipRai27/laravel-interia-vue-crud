@@ -128,7 +128,7 @@ export default {
           department_id: event.target.value,
         },
         {
-          only: ["employees", "department_id"],
+          only: ["employees", "department_id", "flash"],
         }
       );
     };

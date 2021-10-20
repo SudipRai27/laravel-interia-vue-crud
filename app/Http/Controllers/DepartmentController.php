@@ -16,9 +16,18 @@ class DepartmentController extends Controller
         $this->authorizeResource(Department::class);
     }
 
-    public function index()
+    public function index(Request $request)
     {
-        $departments = Department::orderBy('created_at', 'DESC')
+        $sortBy = $request->input('sortBy', 'id');
+        if (!in_array($sortBy, ['id', 'name'])) {
+            $sortBy = 'id';
+        }
+        $sort = $request->input('sort', 'asc');
+        if (!in_array($sort, ['asc', 'desc'])) {
+            $sort = 'asc';
+        }
+
+        $departments = Department::orderBy($sortBy, ($sort === 'asc') ? 'asc' : 'desc')
             ->paginate(10)
             ->through(function ($department) {
                 return  [
@@ -37,7 +46,9 @@ class DepartmentController extends Controller
             'departments'  => $departments,
             'can' => [
                 'create' => auth()->user()->can('create', Department::class),
-            ]
+            ],
+            'sortBy' => $sortBy,
+            'sort' => $sort
         ]);
     }
 

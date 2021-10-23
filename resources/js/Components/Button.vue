@@ -15,9 +15,7 @@
       tracking-widest
       hover:bg-gray-700
       active:bg-gray-900
-      focus:outline-none
-      focus:border-gray-900
-      focus:shadow-outline-gray
+      focus:outline-none focus:border-gray-900 focus:shadow-outline-gray
       transition
       ease-in-out
       duration-150

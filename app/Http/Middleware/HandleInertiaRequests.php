@@ -35,10 +35,10 @@ class HandleInertiaRequests extends Middleware
     {
         return array_merge(parent::share($request), [
             'auth' => function () use ($request) {
-                $data = [];
-                $data['user'] = $request->user();
-                $data['profile']['image'] = $request->user()->getFirstMediaUrl('image');
-                return $data;
+                return
+                    [
+                        'user' => $request->user()
+                    ];
             },
             'toast' => function () use ($request) {
                 return [

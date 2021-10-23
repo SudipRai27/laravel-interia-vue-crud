@@ -53,9 +53,9 @@
                   v-if="previewImage"
                 />
 
-                <div class="mt-2" v-show="auth.profile.image && !previewImage">
+                <div class="mt-2" v-show="profile.image && !previewImage">
                   <img
-                    :src="auth.profile.image"
+                    :src="profile.image"
                     class="rounded-full h-20 w-20 object-cover"
                   />
                 </div>
@@ -102,6 +102,7 @@ export default {
   props: {
     errors: Object,
     auth: Object,
+    profile: Object,
   },
 
   setup(props) {

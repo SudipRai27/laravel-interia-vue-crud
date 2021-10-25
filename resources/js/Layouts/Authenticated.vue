@@ -33,6 +33,12 @@
                 >
                   Employees
                 </BreezeNavLink>
+                <BreezeNavLink
+                  :href="route('blogs.index')"
+                  :active="isActive('blogs')"
+                >
+                  Blogs
+                </BreezeNavLink>
               </div>
             </div>
 
@@ -176,6 +182,12 @@
               :active="isActive('employees')"
             >
               Employees
+            </BreezeResponsiveNavLink>
+            <BreezeResponsiveNavLink
+              :href="route('blogs.index')"
+              :active="isActive('blogs')"
+            >
+              Blogs
             </BreezeResponsiveNavLink>
           </div>
 

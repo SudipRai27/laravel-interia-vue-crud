@@ -1,5 +1,6 @@
 <template>
   <div>
+    <notifications />
     <div class="min-h-screen bg-gray-100">
       <nav class="bg-white border-b border-gray-100">
         <!-- Primary Navigation Menu -->
@@ -38,6 +39,12 @@
                   :active="isActive('blogs')"
                 >
                   Blogs
+                </BreezeNavLink>
+                <BreezeNavLink
+                  :href="route('posts.index')"
+                  :active="isActive('posts')"
+                >
+                  Posts
                 </BreezeNavLink>
               </div>
             </div>
@@ -182,6 +189,12 @@
               :active="isActive('employees')"
             >
               Employees
+            </BreezeResponsiveNavLink>
+            <BreezeResponsiveNavLink
+              :href="route('posts.index')"
+              :active="isActive('posts')"
+            >
+              Posts
             </BreezeResponsiveNavLink>
             <BreezeResponsiveNavLink
               :href="route('blogs.index')"

@@ -313,7 +313,6 @@ export default {
     if (this.meta.current_page > this.meta.last_page) {
       this.switchPage(this.meta.last_page);
     }
-    console.log(this.meta);
   },
   methods: {
     switchPage(page) {

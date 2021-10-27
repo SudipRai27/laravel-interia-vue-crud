@@ -1,6 +1,7 @@
 require("./bootstrap");
 
 import { createApp, h } from "vue";
+import Notifications from "@kyvg/vue3-notification";
 import { createInertiaApp, Head, Link } from "@inertiajs/inertia-vue3";
 import { InertiaProgress } from "@inertiajs/progress";
 
@@ -13,6 +14,7 @@ createInertiaApp({
     setup({ el, app, props, plugin }) {
         return createApp({ render: () => h(app, props) })
             .use(plugin)
+            .use(Notifications)
             .component("Head", Head)
             .component("Link", Link)
             .mixin({ methods: { route } })
@@ -20,4 +22,4 @@ createInertiaApp({
     },
 });
 
-// InertiaProgress.init({ color: "#4B5563", delay: 0 });
+InertiaProgress.init({ color: "#4B5563", delay: 0 });

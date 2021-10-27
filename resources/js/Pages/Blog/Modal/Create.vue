@@ -148,6 +148,12 @@ export default {
         preserveScroll: true,
         onSuccess: () => {
           this.form.reset();
+          console.log(this);
+          this.$notify({
+            title: "Success",
+            type: "success",
+            text: "Blog Created Successfully",
+          });
           this.$emit("closeModal");
         },
       });

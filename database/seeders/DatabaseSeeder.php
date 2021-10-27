@@ -3,6 +3,7 @@
 namespace Database\Seeders;
 
 use App\Models\Blog;
+use App\Models\Post;
 use App\Models\Department;
 use App\Models\AggregateSale;
 use Illuminate\Database\Seeder;
@@ -19,9 +20,10 @@ class DatabaseSeeder extends Seeder
      */
     public function run()
     {
-        // \App\Models\User::factory(10)->create();
+        \App\Models\User::factory(10)->create();
         Blog::factory(100)->create();
         Department::factory(120)->create();
+        Post::factory(200)->create();
         $this->call([
             AggregateSaleSeeder::class,
             AggregateCustomer::class,

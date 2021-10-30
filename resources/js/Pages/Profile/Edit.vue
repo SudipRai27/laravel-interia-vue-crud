@@ -89,6 +89,7 @@ import Label from "@/Components/Label";
 import Input from "@/Components/Input";
 import InputError from "@/Components/InputError";
 import { ref, onMounted } from "vue";
+import { notify } from "@kyvg/vue3-notification";
 
 export default {
   components: {
@@ -120,7 +121,13 @@ export default {
     const submit = () => {
       form.post(route("profile.update"), {
         preserveScroll: true,
-        onSuccess: () => {},
+        onSuccess: () => {
+          notify({
+            title: "Success",
+            type: "success",
+            text: "Profile Updated Successfully",
+          });
+        },
         onError: (error) => {},
       });
     };

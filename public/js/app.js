@@ -21950,6 +21950,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _Components_Input__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! @/Components/Input */ "./resources/js/Components/Input.vue");
 /* harmony import */ var _Components_InputError__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! @/Components/InputError */ "./resources/js/Components/InputError.vue");
 /* harmony import */ var vue__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! vue */ "./node_modules/vue/dist/vue.esm-bundler.js");
+/* harmony import */ var _kyvg_vue3_notification__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! @kyvg/vue3-notification */ "./node_modules/@kyvg/vue3-notification/dist/index.esm.js");
+
 
 
 
@@ -21983,7 +21985,13 @@ __webpack_require__.r(__webpack_exports__);
     var submit = function submit() {
       form.post(route("profile.update"), {
         preserveScroll: true,
-        onSuccess: function onSuccess() {},
+        onSuccess: function onSuccess() {
+          (0,_kyvg_vue3_notification__WEBPACK_IMPORTED_MODULE_7__.notify)({
+            title: "Success",
+            type: "success",
+            text: "Profile Updated Successfully"
+          });
+        },
         onError: function onError(error) {}
       });
     };
@@ -25850,7 +25858,7 @@ __webpack_require__.r(__webpack_exports__);
 
 var _hoisted_1 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("h2", {
   "class": "font-semibold text-xl text-gray-800 leading-tight"
-}, " Dashboard ", -1
+}, " Employees ", -1
 /* HOISTED */
 );
 

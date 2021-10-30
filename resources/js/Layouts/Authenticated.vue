@@ -244,7 +244,7 @@
       <!-- Page Content -->
 
       <main>
-        <Alert :toast="$page.props.toast" />
+        <!-- <Alert :toast="$page.props.toast" /> -->
         <slot />
       </main>
     </div>

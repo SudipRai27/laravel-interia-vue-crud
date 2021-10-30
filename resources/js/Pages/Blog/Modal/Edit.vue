@@ -43,7 +43,7 @@
           >
             &times;
           </button>
-          <div class="px-6 py-3 text-xl border-b font-bold">Create Blog</div>
+          <div class="px-6 py-3 text-xl border-b font-bold">Edit Blog</div>
           <div class="p-6 flex-grow">
             <div>
               <Label for="title" value="Title"></Label>
@@ -83,7 +83,7 @@
                 :disabled="form.processing"
                 @click.prevent="submit"
               >
-                Create
+                Edit
               </button>
             </div>
           </div>
@@ -118,8 +118,9 @@ export default {
       required: true,
       type: Boolean,
     },
-    errors: {
-      required: false,
+
+    blog: {
+      required: true,
       type: Object,
     },
   },
@@ -133,8 +134,8 @@ export default {
   data() {
     return {
       form: this.$inertia.form({
-        title: "",
-        description: "",
+        title: this.blog.title,
+        description: this.blog.description,
       }),
     };
   },
@@ -146,14 +147,13 @@ export default {
     },
     submit() {
       this.form.clearErrors();
-      this.form.post(route("blogs.store"), {
+      this.form.put(route("blogs.update", this.blog.id), {
         preserveScroll: true,
         onSuccess: () => {
-          this.form.reset();
           this.$notify({
             title: "Success",
             type: "success",
-            text: "Blog Created Successfully",
+            text: "Blog Updated Successfully",
           });
           this.$emit("closeModal");
         },

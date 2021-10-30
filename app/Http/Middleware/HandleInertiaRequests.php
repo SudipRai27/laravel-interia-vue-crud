@@ -2,8 +2,11 @@
 
 namespace App\Http\Middleware;
 
-use Illuminate\Http\Request;
+use Closure;
+use Inertia\Inertia;
 use Inertia\Middleware;
+use Illuminate\Http\Request;
+use Illuminate\Http\RedirectResponse;
 
 class HandleInertiaRequests extends Middleware
 {
@@ -31,6 +34,7 @@ class HandleInertiaRequests extends Middleware
      * @param  \Illuminate\Http\Request  $request
      * @return array
      */
+
     public function share(Request $request)
     {
         return array_merge(parent::share($request), [
@@ -45,7 +49,7 @@ class HandleInertiaRequests extends Middleware
                     'success' => $request->session()->get('success'),
                     'error' => $request->session()->get('error')
                 ];
-            }
+            },
         ]);
     }
 }

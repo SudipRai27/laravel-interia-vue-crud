@@ -86,6 +86,7 @@ import Input from "@/Components/Input";
 import InputError from "@/Components/InputError";
 import BreezeAuthenticatedLayout from "@/Layouts/Authenticated.vue";
 import Button from "@/Components/Button";
+import { notify } from "@kyvg/vue3-notification";
 
 export default {
   components: {
@@ -118,6 +119,11 @@ export default {
         preserveScroll: true,
         onSuccess: () => {
           form.reset();
+          notify({
+            title: "Success",
+            type: "success",
+            text: "Employee created successfully",
+          });
         },
         onError: (error) => {},
       });

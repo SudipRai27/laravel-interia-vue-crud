@@ -126,10 +126,18 @@
                       font-medium
                     "
                   >
-                    <a href="#" class="text-indigo-600 hover:text-indigo-900">
+                    <a
+                      href="#"
+                      class="text-indigo-600 hover:text-indigo-900"
+                      @click.prevent="openEditBlogModal(blog.id)"
+                    >
                       Edit
                     </a>
-                    <a href="#" class="text-indigo-600 hover:text-indigo-900">
+                    <a
+                      href="#"
+                      class="text-indigo-600 hover:text-indigo-900"
+                      @click.prevent="openDeleteBlog(blog.id)"
+                    >
                       Delete
                     </a>
                   </td>
@@ -141,9 +149,25 @@
         </div>
       </div>
     </div>
+    <template v-if="blog">
+      <EditBlog
+        :showModal="showEditModal"
+        @closeModal="closeEditModal"
+        :blog="blog"
+      ></EditBlog>
+    </template>
+    <template v-if="blogId">
+      <DeleteBlog
+        :showModal="showDeleteModal"
+        @closeModal="showDeleteModal = false"
+        :blogId="blogId"
+      ></DeleteBlog>
+    </template>
   </div>
 </template>
 <script>
+import EditBlog from "../Modal/Edit.vue";
+import DeleteBlog from "../Modal/Delete.vue";
 import Input from "@/Components/Input";
 import CustomPaginator from "@/Components/CustomPaginator.vue";
 export default {
@@ -161,6 +185,8 @@ export default {
   components: {
     Input,
     CustomPaginator,
+    EditBlog,
+    DeleteBlog,
   },
 
   data() {
@@ -171,12 +197,16 @@ export default {
         field: this.filters.field,
         direction: this.filters.direction,
       },
+      showEditModal: false,
+      showDeleteModal: false,
+      blog: null,
+      blogId: null,
     };
   },
 
   watch: {
     params: {
-      handler: _.debounce(function () {
+      handler: _.debounce(function (value) {
         let params = _.pickBy(this.params);
         this.$inertia.get(route("blogs.index"), params, {
           replace: true,
@@ -186,16 +216,43 @@ export default {
       }, 300),
       deep: true,
     },
+    "params.query"(newVal, oldVal) {
+      if (newVal != oldVal) {
+        this.params.page = 1;
+      }
+    },
   },
 
   methods: {
     sort(field) {
       this.params.field = field;
-      if (!this.params.direction) {
-        this.params.direction = "asc";
-      } else {
-        this.params.direction = this.params.direction == "asc" ? "desc" : "asc";
-      }
+      this.params.direction =
+        this.params.direction && this.params.direction == "asc"
+          ? "desc"
+          : "asc";
+    },
+    openEditBlogModal(id) {
+      axios
+        .get(route("blogs.edit", id))
+        .then((res) => {
+          this.blog = res.data.data;
+          this.showEditModal = true;
+        })
+        .catch((err) => {
+          this.$notify({
+            title: "Success",
+            type: "error",
+            text: err.response.data.message,
+          });
+        });
+    },
+    openDeleteBlog(id) {
+      this.blogId = id;
+      this.showDeleteModal = true;
+    },
+    closeEditModal() {
+      this.blog = null;
+      this.showEditModal = false;
     },
   },
 };

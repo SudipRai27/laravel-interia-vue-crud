@@ -43,30 +43,9 @@
           >
             &times;
           </button>
-          <div class="px-6 py-3 text-xl border-b font-bold">Create Blog</div>
+          <div class="px-6 py-3 text-xl border-b font-bold">Delete Blog</div>
           <div class="p-6 flex-grow">
-            <div>
-              <Label for="title" value="Title"></Label>
-              <Input
-                type="text"
-                id="email"
-                class="mt-1 block w-full"
-                v-model="form.title"
-                @keypress="form.clearErrors('title')"
-              ></Input>
-              <InputError :message="form.errors.title"></InputError>
-            </div>
-            <div class="mt-2">
-              <Label for="description" value="Description"> </Label>
-              <Input
-                type="text"
-                id="email"
-                class="mt-1 block w-full"
-                v-model="form.description"
-                @keypress="form.clearErrors('description')"
-              ></Input>
-              <InputError :message="form.errors.description"></InputError>
-            </div>
+            Are you sure you want to delete this blog ?
           </div>
           <div class="px-6 py-3 border-t">
             <div class="flex justify-end">
@@ -80,10 +59,9 @@
               <button
                 type="button"
                 class="bg-blue-600 text-gray-200 rounded px-4 py-2"
-                :disabled="form.processing"
-                @click.prevent="submit"
+                @click.prevent="deleteBlog"
               >
-                Create
+                Delete
               </button>
             </div>
           </div>
@@ -109,57 +87,36 @@
   </div>
 </template>
 <script>
-import Label from "@/Components/Label";
-import Input from "@/Components/Input";
-import InputError from "@/Components/InputError";
 export default {
+  name: "Delete",
   props: {
+    blogId: {
+      required: true,
+      type: Number,
+    },
     showModal: {
       required: true,
       type: Boolean,
     },
-    errors: {
-      required: false,
-      type: Object,
-    },
-  },
-
-  components: {
-    Input,
-    Label,
-    InputError,
-  },
-
-  data() {
-    return {
-      form: this.$inertia.form({
-        title: "",
-        description: "",
-      }),
-    };
   },
 
   methods: {
     closeModal() {
-      this.form.clearErrors();
       this.$emit("closeModal");
     },
-    submit() {
-      this.form.clearErrors();
-      this.form.post(route("blogs.store"), {
+    deleteBlog() {
+      this.$inertia.delete(route("blogs.destroy", this.blogId), {
         preserveScroll: true,
-        onSuccess: () => {
-          this.form.reset();
+        onSuccess: (page) => {
+          this.closeModal();
           this.$notify({
             title: "Success",
             type: "success",
-            text: "Blog Created Successfully",
+            text: "Blog Deleted Successfully",
           });
-          this.$emit("closeModal");
         },
       });
     },
   },
 };
 </script>
-

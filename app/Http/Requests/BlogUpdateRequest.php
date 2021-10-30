@@ -25,7 +25,7 @@ class BlogUpdateRequest extends FormRequest
     public function rules()
     {
         return [
-            'title' => ['required', Rule::unique('title')->ignore($this->id)],
+            'title' => ['required', Rule::unique('blogs')->ignore($this->blog->id)],
             'description' => ['required']
         ];
     }
